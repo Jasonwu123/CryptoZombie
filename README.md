@@ -35,3 +35,16 @@ mapping (uint => string) userIdToName;
 ### import 
 
 ### 继承
+
+### internal 和 external   
+
+public 和 private 属性之外，Solidity 还使用了另外两个描述函数可见性的修饰词：internal（内部） 和 external（外部）。    
+
+internal 和 private 类似，不过， 如果某个合约继承自其父合约，这个合约即可以访问父合约中定义的“内部”函数。（嘿，这听起来正是我们想要的那样！）。   
+
+external 与public 类似，只不过这些函数只能在合约之外调用 - 它们不能被合约内的其他函数调用。稍后我们将讨论什么时候使用 external 和 public。   
+
+### 与其他合约的交互
+
+如果我们的合约需要和区块链上的其他的合约会话，则需先定义一个 interface (接口)。
+

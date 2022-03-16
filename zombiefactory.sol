@@ -24,7 +24,7 @@ contract ZombieFactory {
     mapping (address => uint) ownerZombieCount; // 记录某个地址所拥有的僵尸数量
 
     // 僵尸生成函数，私有函数，然后存放到僵尸数组中
-    function _createZombie(string memory _name, uint _dna) private {
+    function _createZombie(string memory _name, uint _dna) internal {
         // 当新生成僵尸并存入到数组时，触发事件 NewZombie
         zombies.push(Zombie(_name, _dna)); 
         
