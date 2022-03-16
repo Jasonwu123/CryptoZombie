@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.12;
 
-contract ZombieFactory {
+import "./ownable.sol";
+
+contract ZombieFactory is Ownable {
 
     // 事件，每当新生成一个僵尸都能监听到
     event NewZombie(uint zombieId, string name, uint dna);
@@ -9,11 +11,14 @@ contract ZombieFactory {
     // 保证僵尸dna为16位数
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
+    uint cooldownTime = 1 days;
 
     // 僵尸结构体
     struct Zombie {
         string name;
         uint dna;
+        uint32 level; // 僵尸等级
+        uint32 readyTime; // 僵尸冷却时间
     }
 
     // 僵尸数组
@@ -26,7 +31,7 @@ contract ZombieFactory {
     // 僵尸生成函数，私有函数，然后存放到僵尸数组中
     function _createZombie(string memory _name, uint _dna) internal {
         // 当新生成僵尸并存入到数组时，触发事件 NewZombie
-        zombies.push(Zombie(_name, _dna)); 
+        zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime))); 
         
         // 数组下标当id
         uint id = zombies.length - 1;
