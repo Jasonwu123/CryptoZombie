@@ -19,6 +19,8 @@ contract ZombieFactory is Ownable {
         uint dna;
         uint32 level; // 僵尸等级
         uint32 readyTime; // 僵尸冷却时间
+        uint16 winCount; // 僵尸战斗胜利次数
+        uint16 lossCount; // 僵尸战斗失败次数
     }
 
     // 僵尸数组
@@ -31,7 +33,7 @@ contract ZombieFactory is Ownable {
     // 僵尸生成函数，私有函数，然后存放到僵尸数组中
     function _createZombie(string memory _name, uint _dna) internal {
         // 当新生成僵尸并存入到数组时，触发事件 NewZombie
-        zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime))); 
+        zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime), 0, 0)); 
         
         // 数组下标当id
         uint id = zombies.length - 1;

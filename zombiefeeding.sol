@@ -24,6 +24,12 @@ contract ZombieFeeding is ZombieFactory {
     // 初始化kittycontract
     KittyInterface kittyContract;
 
+    // 函数修饰符,确保僵尸军团的所有权
+    modifier ownerOf(uint _zombieId) {
+        require(msg.sender == zombieToOwner[_zombieId]);
+        _;
+    }
+
     // 获取kitty合约地址 外部调用，只能合约部署者才能调用
     function setKittyContract(address _address) external onlyOwner {
         kittyContract = KittyInterface(_address);
@@ -40,8 +46,7 @@ contract ZombieFeeding is ZombieFactory {
     }
 
     // 当一个僵尸猎食其他生物体时，它自身的DNA将与猎物生物的DNA结合在一起，形成一个新的僵尸DNA
-    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal  {
-        require(msg.sender == zombieToOwner[_zombieId]); // 不希望别人用我们的僵尸去捕猎,确保对自己僵尸的所有权
+    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieId) {
         Zombie storage myZombie = zombies[_zombieId];
 
         // 判断僵尸是否已过冷却时间
