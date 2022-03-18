@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity >=0.4.19;
 
 import "./zombiefactory.sol";
 
@@ -25,7 +25,7 @@ contract ZombieFeeding is ZombieFactory {
     KittyInterface kittyContract;
 
     // 函数修饰符,确保僵尸军团的所有权
-    modifier ownerOf(uint _zombieId) {
+    modifier onlyOwnerOf(uint _zombieId) {
         require(msg.sender == zombieToOwner[_zombieId]);
         _;
     }
@@ -46,7 +46,7 @@ contract ZombieFeeding is ZombieFactory {
     }
 
     // 当一个僵尸猎食其他生物体时，它自身的DNA将与猎物生物的DNA结合在一起，形成一个新的僵尸DNA
-    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieId) {
+    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwnerOf(_zombieId) {
         Zombie storage myZombie = zombies[_zombieId];
 
         // 判断僵尸是否已过冷却时间

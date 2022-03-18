@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity >=0.4.19;
 
 import "./ownable.sol";
+import "./safemath.sol";
 
 contract ZombieFactory is Ownable {
+    using SafeMath16 for uint16;
+    using SafeMath32 for uint32;
+    using SafeMath for uint256;
 
     // 事件，每当新生成一个僵尸都能监听到
     event NewZombie(uint zombieId, string name, uint dna);
@@ -42,7 +46,7 @@ contract ZombieFactory is Ownable {
         zombieToOwner[id] = msg.sender;
 
         // 并且为该msg.sender名下的ownerZombieCount +1
-        ownerZombieCount[msg.sender]++;
+        ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
 
         // 触发事件
         emit NewZombie(id, _name, _dna);
